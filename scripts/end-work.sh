@@ -3,6 +3,8 @@
 # Auto-detects OS (macOS/Windows) and commits/pushes changes
 # Works on macOS and Windows (Git Bash / WSL)
 
+#bash ~/Users/vishnuprasad.prasad/trading-bot/scripts/end-work.sh
+
 # Color codes for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'

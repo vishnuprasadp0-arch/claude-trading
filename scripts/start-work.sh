@@ -3,6 +3,7 @@
 # Auto-detects OS (macOS/Windows) and asks for project directory
 # Works on macOS and Windows (Git Bash / WSL)
 
+##bash ~/Users/vishnuprasad.prasad/trading-bot/scripts/start-work.sh
 set -e
 
 # Color codes for output
