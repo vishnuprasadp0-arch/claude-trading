@@ -1,0 +1,232 @@
+================================================================================
+  TRADING BOT — DEVELOPMENT SUMMARY
+  Project: /Users/vishnuprasad.prasad/trading-bot
+  Session date: 2026-05-06
+================================================================================
+
+--------------------------------------------------------------------------------
+1. PROJECT OVERVIEW
+--------------------------------------------------------------------------------
+
+An NSE (Indian equities) swing trading research platform built in Python.
+
+Core capabilities:
+  - Extract trading strategies from YouTube videos using an LLM (Groq)
+  - Backtest strategies against historical NSE market data (NIFTY 50 universe)
+  - Manage trade records in an Excel workbook
+  - Visualise results via a Streamlit dashboard
+
+Technology stack:
+  - Language:    Python 3.10+
+  - LLM:         Groq API (llama-3.3-70b-versatile)
+  - Broker/Data: Zerodha Kite Connect API
+  - Fallback:    NSE Bhavcopy CSV archives (free, public)
+  - Dashboard:   Streamlit + Plotly
+  - Storage:     Excel (openpyxl + xlwings)
+
+How to run:
+  bash setup.sh                        # validate env, install deps
+  bash run.sh dashboard                # launch dashboard (http://localhost:8501)
+  bash run.sh token                    # generate Zerodha OAuth token
+  python main.py scrape --url <URL>    # extract strategy from YouTube
+  python main.py status                # show open trades from Excel
+
+
+--------------------------------------------------------------------------------
+2. WHAT WE BUILT / CHANGED IN THIS SESSION
+--------------------------------------------------------------------------------
+
+A. DASHBOARD REVAMP (trading_bot/dashboard/app.py)
+---------------------------------------------------
+Before: basic single-page, 5 KPIs, simple line chart, no comparison.
+
+After: full-page with three clearly labelled sections:
+  ⚙️ Strategy  |  ▶️ Backtest  |  📊 Results  |  ⚖️ Strategy Comparison
+
+Key improvements:
+  - 🔄 Restart button (top-right) — clears app-level session state only,
+    avoids swallowing Streamlit's internal rerun exception
+  - Strategy section: grouped EMA / Risk / Volume / Confirmation blocks,
+    info banners per strategy explaining logic and win rate
+  - Backtest section: per-symbol fetch progress bar (X/50), companies-fetched
+    metric, expandable skipped-symbols list, warmup period warning before run
+  - Results section: 8 KPI metrics (trades, win rate, net P&L + %, profit factor,
+    max drawdown, avg hold, final equity), Plotly equity curve with drawdown bars
+    on secondary axis, win/loss donut chart, P&L-by-symbol bar chart, formatted
+    trade table with rupee symbols
+  - Default backtest period: 1 year
+  - 0-trade diagnostic: explains warmup mismatch with specific numbers
+
+B. STRATEGY LIST (6 final strategies)
+--------------------------------------
+  1. sharique_swing       — Sharique Shamsudheen Swing Trading (approximation)
+  2. pullback_20dma       — Pullback to 20 DMA (from PDF)
+  3. rsi_2_mean_reversion — RSI-2 Mean Reversion  ★ 76-79% win rate
+  4. momentum_30          — Momentum 30 (from PDF)
+  5. pullback_50ema       — Pullback to 50 EMA  ★ 55-60% win rate
+  6. breakout_52w         — 52-Week High Breakout + Volume (from PDF)
+
+Each has a full StrategyConfig preset and an info banner in the UI.
+
+C. NEW STRATEGY STYLES IN ENGINE (trading_bot/backtest/engine.py)
+------------------------------------------------------------------
+Added 5 new _evaluate_checks() blocks:
+  - rsi_2_mean_reversion   : RSI(2) < 10 + above 200 EMA + bullish reversal
+  - rsi_pullback_uptrend   : RSI 38-55 + above 50 EMA + near 20 EMA + reversal
+  - consolidation_breakout : narrow range + breakout + volume
+  - pullback_50ema         : at 50 EMA + above 200 EMA + bullish reversal
+  - sharique_swing         : above 50 EMA + pullback to 20 EMA + RSI 35-60
+                             + bullish reversal + above-avg volume
+Refined rsi_reversal: threshold relaxed from RSI <= 35 to <= 40.
+
+D. NEW TECHNICAL INDICATORS (trading_bot/backtest/indicators.py)
+-----------------------------------------------------------------
+Added to build_feature_frame():
+  - rsi_2          : 2-period RSI (Larry Connors mean reversion)
+  - atr_14         : 14-period Average True Range
+  - range_10d      : 10-day close range
+  - range_20d_avg  : 20-day average candle range
+  - is_consolidating: bool — narrow range detector
+
+E. SHARIQUE SHAMSUDHEEN STRATEGY (research)
+--------------------------------------------
+Specific rules are not publicly documented (proprietary course).
+Approximation built from known teaching framework:
+  Entry: price above 50 EMA + pullback to 20 EMA + RSI 35-60 zone
+         + bullish reversal candle + above-average volume
+  Exit:  5% stop loss, 2:1 risk/reward, max 10 holding days
+
+F. STRATEGY COMPARISON (trading_bot/dashboard/app.py)
+------------------------------------------------------
+After running any single backtest, all 6 strategies auto-run on the same
+fetched data (no re-download) and the ⚖️ Comparison section shows:
+
+  - Performance Summary table sorted by win rate, current strategy marked ★
+    Columns: Strategy, Trades, Win Rate, Net P&L, P&L %, Profit Factor,
+             Max Drawdown, Avg Hold
+  - Multi-strategy equity curves: all 6 lines on one Plotly chart,
+    current strategy drawn thicker
+
+Results cached per strategy+config key — instant on repeat views.
+New run clears and reruns comparison automatically.
+
+G. NSE BHAVCOPY DATA LIBRARY
+------------------------------
+Problem: files downloaded on demand, NSE changed URL format in Jan 2024.
+Old dates (<=2023) use a different archive URL pattern.
+
+What we built:
+  - get_cached_dates()    : scans cache for both old and new filename formats
+  - get_known_holidays()  : reads _nse_holidays.json (confirmed 404 dates)
+  - _record_holiday()     : writes confirmed NSE holidays to JSON cache
+  - get_coverage_stats()  : cached days + confirmed holidays + missing dates
+                            all from one consistent calculation
+  - download_bulk()       : downloads missing dates with progress callback,
+                            records holidays automatically
+  - Dual URL format:
+      New (2024+): .../content/cm/BhavCopy_NSE_CM_0_0_0_YYYYMMDD_F_0000.csv.zip
+      Old (<=2023): .../content/historical/EQUITIES/YYYY/MMM/cmDDMMMYYYYbhav.csv.zip
+  - Old format EQ filter  : filters to EQ series rows only
+  - Retry logic           : 3 attempts with exponential backoff (2s, 4s)
+  - Timeout               : increased 30s -> 60s
+
+Sidebar 📦 Data Library:
+  - X / total days with trading days + holidays breakdown
+  - Progress bar (🟢 >=99%, 🟡 >=60%, 🔴 <60%)
+  - Date range covered, expandable missing dates list
+  - ⬇️ Download missing data button with live progress
+  - Coverage % always derived from accounted/total (no stale cached formula)
+
+H. BACKTEST RESULT CACHING
+----------------------------
+Results cached to disk per unique combo of:
+  strategy params + date range + capital + risk % + data source (MD5 hash)
+
+Cache location: trading_bot/data/results/backtest_cache/
+Files: {hash}.trades.csv, {hash}.equity.csv, {hash}.meta.json
+
+Loads instantly on repeat with "⚡ Loaded from cache" notice.
+🗑️ Clear cache button forces a fresh run.
+
+I. LOGGING (trading_bot/utils/logging.py)
+------------------------------------------
+Upgraded from console-only to dual-output:
+  - Console : INFO and above
+  - File    : DEBUG and above → trading_bot.log (5 MB rotating, 2 backups)
+
+All fetch attempts, retries, 404s, and download progress logged at DEBUG.
+Visible in sidebar 🪵 Recent logs expander (last 60 lines).
+
+J. ERROR HANDLING IMPROVEMENTS
+--------------------------------
+  - Symbols with no data skipped (not crash) — shown in fetch status metric
+  - 0-trade backtests show warmup diagnostic with specific numbers
+  - Warmup warning shown before run if date range < EMA warmup period
+  - Timeout during bulk download shows error message, does not crash app
+  - st.rerun() placed outside try/except (Streamlit rerun is an exception
+    internally — broad except clauses were silently swallowing it)
+  - Restart button deletes only app-level keys, not Streamlit widget registry
+
+
+--------------------------------------------------------------------------------
+3. FILE CHANGES
+--------------------------------------------------------------------------------
+
+Modified:
+  trading_bot/dashboard/app.py       — full dashboard revamp (primary file)
+  trading_bot/backtest/engine.py     — 5 new strategy styles + sharique_swing
+  trading_bot/backtest/indicators.py — rsi_2, atr_14, is_consolidating
+  trading_bot/backtest/data.py       — dual URL, coverage stats, holiday cache,
+                                       bulk download, retry logic
+  trading_bot/utils/logging.py       — file logging with rotation
+
+Not modified:
+  trading_bot/backtest/models.py     — StrategyConfig, BacktestConfig unchanged
+  trading_bot/backtest/universe.py   — NIFTY 50 symbols unchanged
+  trading_bot/auth/zerodha.py        — unchanged
+  trading_bot/scraper/               — unchanged
+  trading_bot/excel/                 — unchanged
+  main.py / dashboard.py             — unchanged
+
+
+--------------------------------------------------------------------------------
+4. KNOWN LIMITATIONS / FUTURE WORK
+--------------------------------------------------------------------------------
+
+  - Live execution disabled (execution/engine.py raises RuntimeError).
+    Dashboard is backtest/paper trading only.
+  - Sharique Swing parameters are an approximation (course content is private).
+  - APScheduler installed but not used — no scheduled live runs.
+  - No CI/CD or Docker. macOS/Windows only (xlwings dependency).
+  - Test coverage minimal — only tests/test_backtest.py covers the engine.
+  - Momentum 30 needs 252+ days of data. RSI-2, Pullback 50 EMA, 52-Week
+    Breakout need 200+ days. Always use >= 2 year date range for best results.
+
+
+--------------------------------------------------------------------------------
+5. HOW THE BACKTEST WORKS
+--------------------------------------------------------------------------------
+
+Data flow:
+  1. Select strategy → loads StrategyConfig preset
+  2. Set date range / capital / risk %
+  3. Click ▶️ Run Backtest
+  4. For each of 50 NIFTY symbols:
+       - Fetch daily OHLCV (Bhavcopy or Zerodha), cached as CSV
+       - Compute 30+ indicators (EMA, MACD, RSI, RSI-2, Bollinger, ATR,
+         volume ratios, momentum scores, candlestick patterns)
+  5. For each symbol walk daily candles:
+       - Evaluate 7 checks (trend, entry_point, volume, MACD, EMA, support, reversal)
+       - If score >= minimum_confidence and entry check passes → open trade
+       - Exit on: stop-loss hit, target hit, or max holding days elapsed
+  6. Sort all trades by (entry_date, score)
+  7. Apply max open positions cap
+  8. Build equity curve (running P&L)
+  9. Display results + auto-run comparison across all 6 strategies
+
+Position sizing:
+  quantity = floor((capital × risk_pct / 100) / (entry_price − stop_loss))
+
+================================================================================
+  END OF SUMMARY
+================================================================================
