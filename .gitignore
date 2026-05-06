@@ -53,3 +53,4 @@ Thumbs.db
 # Dependencies
 *.log
 npm-debug.log*
+.env
