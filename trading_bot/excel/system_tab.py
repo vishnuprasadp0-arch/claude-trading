@@ -59,6 +59,13 @@ def append_trade_row(wb, trade: TradeRow) -> int:
     return row
 
 
+def write_trade_exit(wb, row: int, exit_price: float, exit_date: str) -> None:
+    ws = wb[_SHEET]
+    ws.cell(row=row, column=18, value=exit_price)  # R = exit price
+    ws.cell(row=row, column=19, value=exit_date)   # S = exit date
+    logger.info("Trade exit written: row %d, exit_price=%.2f, exit_date=%s", row, exit_price, exit_date)
+
+
 def read_open_trades(wb) -> list[dict]:
     ws = wb[_SHEET]
     open_trades = []

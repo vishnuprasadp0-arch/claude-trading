@@ -1,0 +1,21 @@
+symbol,signal_date,entry_date,exit_date,side,entry_price,exit_price,stop_loss,target_price,quantity,pnl,pnl_pct,holding_days,confidence,score,market_trend,entry_point,avg_volume,macd_crossover,ema_crossover,price_position,bullish_reversal,comments
+ADANIPORTS,2026-02-23,2026-02-24,2026-03-04,LONG,1553.7,1429.4,1429.4,1740.15,10,-1243.0,-8.0,6,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+ASIANPAINT,2026-02-23,2026-02-24,2026-03-04,LONG,2413.0,2219.96,2219.96,2702.56,6,-1158.24,-8.0,6,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+AXISBANK,2026-02-23,2026-02-24,2026-03-09,LONG,1398.0,1286.16,1286.16,1565.76,11,-1230.24,-8.0,9,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+BAJAJ-AUTO,2026-02-23,2026-02-24,2026-03-12,LONG,9875.0,9085.0,9085.0,11060.0,1,-790.0,-8.0,12,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+BEL,2026-02-23,2026-02-24,2026-03-24,LONG,437.0,414.45,402.04,489.44,35,-789.25,-5.16,20,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+LT,2026-03-04,2026-03-05,2026-03-13,LONG,3924.2,3610.26,3610.26,4395.11,3,-941.82,-8.0,7,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+ADANIPORTS,2026-03-05,2026-03-06,2026-03-13,LONG,1489.0,1369.88,1369.88,1667.68,10,-1191.2,-8.0,6,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+AXISBANK,2026-03-10,2026-03-11,2026-03-13,LONG,1310.0,1205.2,1205.2,1467.2,11,-1152.8,-8.0,3,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+BAJAJ-AUTO,2026-03-13,2026-03-16,2026-04-15,LONG,8866.0,9929.92,8156.72,9929.92,1,1063.92,12.0,19,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+EICHERMOT,2026-03-13,2026-03-16,2026-04-16,LONG,6701.0,7131.0,6164.92,7505.12,2,860.0,6.42,20,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+INDUSINDBK,2026-03-13,2026-03-16,2026-04-16,LONG,814.55,847.9,749.39,912.29,19,633.65,4.09,20,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+M&M,2026-03-13,2026-03-16,2026-04-10,LONG,2902.0,3250.24,2669.84,3250.24,5,1741.2,12.0,17,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+APOLLOHOSP,2026-03-24,2026-03-25,2026-04-27,LONG,7461.0,7825.0,6864.12,8356.32,2,728.0,4.88,20,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+POWERGRID,2026-04-13,2026-04-15,2026-05-06,LONG,303.4,315.95,279.13,339.8,51,640.05,4.14,15,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+AXISBANK,2026-04-15,2026-04-16,2026-05-05,LONG,1362.0,1253.04,1253.04,1525.44,11,-1198.56,-8.0,13,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+BAJAJ-AUTO,2026-04-16,2026-04-17,2026-05-06,LONG,9810.0,10319.0,9025.2,10987.2,1,509.0,5.19,13,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+SBILIFE,2026-04-16,2026-04-17,2026-04-23,LONG,1967.0,1809.64,1809.64,2203.04,7,-1101.52,-8.0,5,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+DRREDDY,2026-04-24,2026-04-27,2026-05-06,LONG,1320.4,1311.0,1214.77,1478.85,11,-103.4,-0.71,7,Medium,5,Up,Weak,Good,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+APOLLOHOSP,2026-04-28,2026-04-29,2026-05-06,LONG,7745.0,7760.5,7125.4,8674.4,2,31.0,0.2,5,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7
+SUNPHARMA,2026-05-05,2026-05-06,2026-05-06,LONG,1837.0,1850.2,1690.04,2057.44,8,105.6,0.72,1,Medium,5,Up,Weak,Low,N/A,Trend OK,Momentum weak,N/A,Signal score 5/7

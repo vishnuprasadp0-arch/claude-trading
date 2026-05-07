@@ -1,0 +1,38 @@
+symbol,signal_date,entry_date,exit_date,side,entry_price,exit_price,stop_loss,target_price,quantity,pnl,pnl_pct,holding_days,confidence,score,market_trend,entry_point,avg_volume,macd_crossover,ema_crossover,price_position,bullish_reversal,comments
+SBIN,2026-01-20,2026-01-21,2026-02-06,LONG,1032.0,1066.4,980.4,1135.2,9,309.6,3.33,12,Medium,4,Up,Weak,Good,MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+TATASTEEL,2026-02-06,2026-02-09,2026-02-24,LONG,202.0,209.13,191.9,222.2,49,349.37,3.53,12,Medium,5,Up,Weak,Low,MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+SBIN,2026-02-09,2026-02-10,2026-02-25,LONG,1151.0,1200.1,1093.45,1266.1,8,392.8,4.27,12,Medium,4,Up,Weak,Good,MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+BHARTIARTL,2026-02-10,2026-02-11,2026-02-25,LONG,2012.9,1912.26,1912.26,2214.18,4,-402.56,-5.0,11,Medium,5,Up,Weak,Good,MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+SHRIRAMFIN,2026-02-11,2026-02-12,2026-02-27,LONG,1053.5,1079.4,1000.82,1158.86,9,233.1,2.46,12,Medium,5,Up,Weak,Low,MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+HEROMOTOCO,2026-02-13,2026-02-16,2026-03-04,LONG,5578.0,5500.0,5299.1,6135.8,1,-78.0,-1.4,12,Medium,5,Up,Weak,Low,MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+RELIANCE,2026-02-24,2026-02-25,2026-03-02,LONG,1435.0,1363.25,1363.25,1578.5,6,-430.5,-5.0,4,Medium,4,Up,Weak,Good,MACD cross,At 50 EMA,Below 200 EMA,Bullish reversal,Signal score 4/7
+APOLLOHOSP,2026-02-25,2026-02-26,2026-03-16,LONG,7800.0,7410.0,7410.0,8580.0,1,-390.0,-5.0,12,Medium,5,Up,Weak,Low,MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+TATASTEEL,2026-02-25,2026-02-26,2026-03-02,LONG,215.95,205.15,205.15,237.55,46,-496.8,-5.0,3,Medium,4,Up,Weak,Good,MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+SHRIRAMFIN,2026-03-02,2026-03-04,2026-03-04,LONG,1042.3,990.18,990.18,1146.54,9,-469.08,-5.0,1,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+LT,2026-03-04,2026-03-05,2026-03-12,LONG,3924.2,3727.99,3727.99,4316.62,2,-392.42,-5.0,6,Medium,5,Up,Weak,Good,No MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+TATASTEEL,2026-03-04,2026-03-05,2026-03-09,LONG,198.5,188.57,188.57,218.36,50,-496.5,-5.0,3,Medium,5,Up,Weak,Good,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+ADANIPORTS,2026-03-04,2026-03-05,2026-03-13,LONG,1447.2,1374.84,1374.84,1591.92,6,-434.16,-5.0,7,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Below 200 EMA,Bullish reversal,Signal score 4/7
+M&M,2026-03-04,2026-03-05,2026-03-12,LONG,3264.3,3101.09,3101.09,3590.72,3,-489.63,-5.0,8,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Below 200 EMA,Bullish reversal,Signal score 4/7
+SBIN,2026-03-09,2026-03-10,2026-03-13,LONG,1111.1,1055.54,1055.54,1222.22,8,-444.48,-5.0,4,High,7,Up,Good,Good,No MACD cross,At 50 EMA,Above 200 EMA,Bullish reversal,Signal score 7/7
+BPCL,2026-03-12,2026-03-13,2026-03-16,LONG,323.65,307.47,307.47,356.01,30,-485.4,-5.0,2,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Below 200 EMA,Bullish reversal,Signal score 4/7
+SHRIRAMFIN,2026-03-13,2026-03-16,2026-03-20,LONG,990.0,940.5,940.5,1089.0,10,-495.0,-5.0,5,Medium,5,Up,Weak,Good,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+TITAN,2026-03-13,2026-03-16,2026-03-23,LONG,4057.0,3854.15,3854.15,4462.7,2,-405.7,-5.0,6,Medium,5,Up,Weak,Good,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+BEL,2026-03-16,2026-03-17,2026-03-23,LONG,432.45,410.83,410.83,475.69,23,-497.26,-5.0,5,High,7,Up,Good,Good,No MACD cross,At 50 EMA,Above 200 EMA,Bullish reversal,Signal score 7/7
+HINDALCO,2026-03-16,2026-03-17,2026-03-20,LONG,928.9,882.45,882.45,1021.8,10,-464.5,-5.0,4,Medium,5,Up,Weak,Good,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+ONGC,2026-03-16,2026-03-17,2026-03-30,LONG,260.65,286.71,247.62,286.71,38,990.28,10.0,9,Medium,5,Up,Weak,Low,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+HINDALCO,2026-03-23,2026-03-24,2026-04-06,LONG,849.0,933.9,806.55,933.9,11,933.9,10.0,7,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+SHRIRAMFIN,2026-03-23,2026-03-24,2026-04-08,LONG,907.0,997.7,861.65,997.7,11,997.7,10.0,9,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+APOLLOHOSP,2026-03-24,2026-03-25,2026-04-15,LONG,7461.0,7642.0,7087.95,8207.1,1,181.0,2.43,12,Medium,5,Up,Weak,Good,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+DRREDDY,2026-03-24,2026-03-25,2026-04-02,LONG,1268.9,1205.45,1205.45,1395.8,7,-444.15,-5.0,5,Medium,5,Up,Weak,Good,No MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+COALINDIA,2026-03-30,2026-04-01,2026-04-02,LONG,464.0,440.8,440.8,510.4,21,-487.2,-5.0,2,High,7,Up,Good,Good,No MACD cross,At 50 EMA,Above 200 EMA,Bullish reversal,Signal score 7/7
+BRITANNIA,2026-04-02,2026-04-06,2026-04-22,LONG,5420.0,5729.5,5149.0,5962.0,1,309.5,5.71,12,Medium,4,Up,Weak,Good,No MACD cross,Away from 50 EMA,Below 200 EMA,Bullish reversal,Signal score 4/7
+INDUSINDBK,2026-04-02,2026-04-06,2026-04-16,LONG,774.6,852.06,735.87,852.06,12,929.52,10.0,8,Medium,4,Up,Weak,Low,No MACD cross,Away from 50 EMA,Below 200 EMA,Bullish reversal,Signal score 4/7
+NTPC,2026-04-06,2026-04-07,2026-04-21,LONG,364.85,401.33,346.61,401.33,27,984.96,10.0,10,High,7,Up,Good,Low,No MACD cross,At 50 EMA,Above 200 EMA,Bullish reversal,Signal score 7/7
+LT,2026-04-08,2026-04-09,2026-04-27,LONG,3988.0,4053.6,3788.6,4386.8,2,131.2,1.64,12,Medium,4,Up,Weak,Good,MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+ADANIPORTS,2026-04-15,2026-04-16,2026-05-04,LONG,1524.9,1677.4,1448.65,1677.4,6,915.0,10.0,12,Medium,4,Up,Weak,Good,MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7
+APOLLOHOSP,2026-04-16,2026-04-17,2026-05-05,LONG,7553.0,7772.0,7175.35,8308.3,1,219.0,2.9,12,Medium,5,Up,Weak,Low,MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+SBIN,2026-04-21,2026-04-22,2026-05-05,LONG,1110.0,1054.5,1054.5,1221.0,9,-499.5,-5.0,9,Medium,5,Up,Weak,Low,MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+ONGC,2026-04-22,2026-04-23,2026-05-06,LONG,284.85,280.8,270.61,313.33,35,-141.75,-1.42,9,Medium,5,Up,Weak,Low,No MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+BAJAJ-AUTO,2026-04-27,2026-04-28,2026-05-06,LONG,9622.0,10319.0,9140.9,10584.2,1,697.0,7.24,6,Medium,5,Up,Weak,Low,MACD cross,At 50 EMA,Above 200 EMA,No reversal,Signal score 5/7
+INDUSINDBK,2026-05-05,2026-05-06,2026-05-06,LONG,920.4,946.75,874.38,1012.44,10,263.5,2.86,1,Medium,5,Up,Weak,Low,MACD cross,Away from 50 EMA,Above 200 EMA,Bullish reversal,Signal score 5/7
+ADANIPORTS,2026-05-05,2026-05-06,2026-05-06,LONG,1750.0,1748.3,1662.5,1925.0,5,-8.5,-0.1,1,Medium,4,Up,Weak,Good,MACD cross,Away from 50 EMA,Above 200 EMA,No reversal,Signal score 4/7

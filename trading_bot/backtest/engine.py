@@ -14,8 +14,7 @@ def run_backtest(price_frames: dict[str, pd.DataFrame], strategy: StrategyConfig
     available_capital = config.initial_capital
 
     for symbol, df in price_frames.items():
-        features = build_feature_frame(df, strategy)
-        symbol_trades = _backtest_symbol(features, symbol, strategy, config, available_capital)
+        symbol_trades = _backtest_symbol(df, symbol, strategy, config, available_capital)
         trades.extend(symbol_trades)
 
     trades.sort(key=lambda trade: (trade.entry_date, -trade.score, trade.symbol))
@@ -30,7 +29,12 @@ def run_backtest(price_frames: dict[str, pd.DataFrame], strategy: StrategyConfig
     return trades_df, equity_df
 
 
-def _backtest_symbol(features: pd.DataFrame, symbol: str, strategy: StrategyConfig, config: BacktestConfig, available_capital: float) -> list[TradeRecord]:
+def _backtest_symbol(df: pd.DataFrame, symbol: str, strategy: StrategyConfig, config: BacktestConfig, available_capital: float) -> list[TradeRecord]:
+    if strategy.timeframe == "week":
+        from trading_bot.backtest.indicators import resample_to_weekly
+        df = resample_to_weekly(df)
+    features = build_feature_frame(df, strategy)
+
     trades: list[TradeRecord] = []
     last_exit_idx = -1
 
@@ -39,7 +43,7 @@ def _backtest_symbol(features: pd.DataFrame, symbol: str, strategy: StrategyConf
             continue
         row = features.iloc[idx]
         next_row = features.iloc[idx + 1]
-        checks = _evaluate_checks(row, strategy)
+        checks = evaluate_checks(row, strategy)
         score = sum(item["passed"] for item in checks.values())
         if score < strategy.minimum_confidence:
             continue
@@ -58,7 +62,13 @@ def _backtest_symbol(features: pd.DataFrame, symbol: str, strategy: StrategyConf
             continue
         target_price = round(entry_price + risk_per_share * strategy.risk_reward_ratio, 2)
 
-        exit_idx, exit_price = _resolve_exit(features, idx + 1, stop_loss, target_price, strategy.max_holding_days)
+        if strategy.use_trailing_stop:
+            exit_idx, exit_price = _resolve_exit_trailing(
+                features, idx + 1, stop_loss, entry_price, risk_per_share,
+                strategy.max_holding_days, strategy.trailing_trigger_r, strategy.trailing_stop_pct,
+            )
+        else:
+            exit_idx, exit_price = _resolve_exit(features, idx + 1, stop_loss, target_price, strategy.max_holding_days)
         last_exit_idx = exit_idx
         pnl = round((exit_price - entry_price) * quantity, 2)
         pnl_pct = round(((exit_price - entry_price) / entry_price) * 100.0, 2)
@@ -92,7 +102,7 @@ def _backtest_symbol(features: pd.DataFrame, symbol: str, strategy: StrategyConf
     return trades
 
 
-def _evaluate_checks(row: pd.Series, strategy: StrategyConfig) -> dict[str, dict]:
+def evaluate_checks(row: pd.Series, strategy: StrategyConfig) -> dict[str, dict]:
     ema_cross = row["ema_signal_fast"] > row["ema_signal_slow"]
     macd_cross = row["macd_line"] > row["macd_signal"]
     trend = row["ema_trend_fast"] > row["ema_trend_slow"]
@@ -320,6 +330,43 @@ def _evaluate_checks(row: pd.Series, strategy: StrategyConfig) -> dict[str, dict
         ema_passed = trend and near_20ema
         support_passed = rsi_cooling
         reversal_passed = bullish_reversal
+    elif strategy.strategy_style == "vishnu_trading_strategy":
+        # Weekly candlestick + MACD negative-zone crossover + volume + MA confluence
+        strong_pattern = pd.notna(row.get("strong_bullish_pattern")) and bool(row["strong_bullish_pattern"])
+        hist_now = row.get("macd_hist", pd.NA)
+        hist_prev = row.get("macd_hist_prev", pd.NA)
+        neg_zone_cross = (
+            pd.notna(hist_now) and pd.notna(hist_prev) and
+            float(hist_prev) < 0 and float(hist_now) > 0 and
+            pd.notna(row["macd_line"]) and float(row["macd_line"]) < 0 and
+            pd.notna(row["macd_signal"]) and float(row["macd_signal"]) < 0
+        )
+        above_12_26 = (
+            pd.notna(row["ema_signal_fast"]) and row["close"] > row["ema_signal_fast"] and
+            pd.notna(row["ema_signal_slow"]) and row["close"] > row["ema_signal_slow"]
+        )
+        near_50w = (
+            pd.notna(row["ema_trend_fast"]) and
+            row["close"] >= row["ema_trend_fast"] and
+            abs(row["close"] / row["ema_trend_fast"] - 1) <= 0.05
+        )
+        near_200w = (
+            pd.notna(row["ema_trend_slow"]) and
+            row["close"] >= row["ema_trend_slow"] and
+            abs(row["close"] / row["ema_trend_slow"] - 1) <= 0.05
+        )
+        near_50w_or_200w = near_50w or near_200w
+        inst_volume = bool(row["avg_volume"]) and row["volume"] >= row["avg_volume"] * strategy.volume_multiplier
+
+        entry_point = strong_pattern and neg_zone_cross and above_12_26 and near_50w_or_200w and inst_volume
+        macd_label = "Neg-zone cross" if neg_zone_cross else "No neg-zone cross"
+        ema_label = "Above 12W & 26W EMA" if above_12_26 else "Below EMAs"
+        support_label = "At 50W/200W MA" if near_50w_or_200w else "Away from MA support"
+        reversal_label = "Strong pattern" if strong_pattern else "No clear pattern"
+        macd_passed = neg_zone_cross
+        ema_passed = above_12_26
+        support_passed = near_50w_or_200w
+        reversal_passed = strong_pattern
     else:
         entry_point = ema_cross and near_support
         macd_label = "Yes" if macd_cross else "No"
@@ -340,6 +387,40 @@ def _evaluate_checks(row: pd.Series, strategy: StrategyConfig) -> dict[str, dict
         "support": {"passed": bool(support_passed), "label": support_label},
         "reversal": {"passed": bool(reversal_passed), "label": reversal_label},
     }
+
+
+def _resolve_exit_trailing(
+    features: pd.DataFrame,
+    entry_idx: int,
+    stop_loss: float,
+    entry_price: float,
+    risk_per_share: float,
+    max_holding_days: int,
+    trailing_trigger_r: float,
+    trailing_stop_pct: float,
+) -> tuple[int, float]:
+    """Exit with a trailing SL that activates once price reaches trailing_trigger_r × risk_per_share above entry."""
+    final_idx = min(len(features) - 1, entry_idx + max_holding_days - 1)
+    trigger_price = entry_price + trailing_trigger_r * risk_per_share
+    high_watermark = entry_price
+    trailing_active = False
+
+    for idx in range(entry_idx, final_idx + 1):
+        row = features.iloc[idx]
+        high_watermark = max(high_watermark, float(row["high"]))
+
+        if not trailing_active and high_watermark >= trigger_price:
+            trailing_active = True
+
+        if trailing_active:
+            dynamic_sl = max(entry_price, high_watermark * (1 - trailing_stop_pct / 100.0))
+            if float(row["low"]) <= dynamic_sl:
+                return idx, round(dynamic_sl, 2)
+        else:
+            if float(row["low"]) <= stop_loss:
+                return idx, stop_loss
+
+    return final_idx, round(float(features.iloc[final_idx]["close"]), 2)
 
 
 def _resolve_exit(features: pd.DataFrame, entry_idx: int, stop_loss: float, target_price: float, max_holding_days: int) -> tuple[int, float]:

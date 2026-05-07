@@ -23,6 +23,9 @@ case "$1" in
     dashboard)
         streamlit run dashboard.py
         ;;
+    dash)
+        python3 -m trading_bot.dashboard.dash_app.app
+        ;;
     token)
         python3 get_access_token.py --write-env
         ;;
@@ -30,7 +33,7 @@ case "$1" in
         python3 main.py status
         ;;
     *)
-        echo "Unsupported mode. Use: bash run.sh dashboard | token | status"
+        echo "Unsupported mode. Use: bash run.sh dashboard | dash | token | status"
         exit 1
         ;;
 esac

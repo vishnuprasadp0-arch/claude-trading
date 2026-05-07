@@ -15,7 +15,12 @@ from trading_bot.backtest.models import BacktestConfig, StrategyConfig
 from trading_bot.backtest.pdf_strategy import extract_pdf_text, infer_strategy_config
 from trading_bot.backtest.universe import NIFTY_50_SYMBOLS
 from trading_bot.config.settings import EXCEL_PATH
-from trading_bot.excel.system_tab import read_capital_settings
+from trading_bot.excel.system_tab import read_capital_settings, append_trade_row, read_open_trades, write_trade_exit
+from trading_bot.excel.workbook import WorkbookManager
+from trading_bot.execution.paper_engine import (
+    PaperSignal, ExitRecommendation,
+    scan_signals, evaluate_exits, signal_to_trade_row,
+)
 from trading_bot.utils.logging import get_logger, _LOG_FILE
 
 import hashlib
@@ -31,12 +36,13 @@ CACHE_DIR = BASE_DIR / "trading_bot" / "data" / "cache"
 RESULTS_DIR = BASE_DIR / "trading_bot" / "data" / "results"
 
 STRATEGY_LABELS = {
-    "sharique_swing":       "Sharique Shamsudheen — Swing Trading",
-    "pullback_20dma":       "Pullback to 20 DMA",
-    "rsi_2_mean_reversion": "RSI-2 Mean Reversion  ★ 76-79% win rate",
-    "momentum_30":          "Momentum 30",
-    "pullback_50ema":       "Pullback to 50 EMA  ★ 55-60% win rate",
-    "breakout_52w":         "52-Week High Breakout + Volume",
+    "sharique_swing":          "Sharique Shamsudheen — Swing Trading",
+    "pullback_20dma":          "Pullback to 20 DMA",
+    "rsi_2_mean_reversion":    "RSI-2 Mean Reversion  ★ 76-79% win rate",
+    "momentum_30":             "Momentum 30",
+    "pullback_50ema":          "Pullback to 50 EMA  ★ 55-60% win rate",
+    "breakout_52w":            "52-Week High Breakout + Volume",
+    "vishnu_trading_strategy": "Vishnu Trading Strategy  ★ 55-60% win rate",
 }
 
 
@@ -55,6 +61,7 @@ def main() -> None:
             "_strategy", "_strategy_form_initialized", "_last_strategy_style",
             "data_source", "price_frames", "backtest_config",
             "comparison_results", "data_coverage_stats",
+            "paper_price_frames", "paper_signals", "paper_exits",
         ]
         for key in _app_keys:
             st.session_state.pop(key, None)
@@ -65,6 +72,8 @@ def main() -> None:
     _backtest_tab()
     st.divider()
     _results_tab()
+    st.divider()
+    _paper_trading_tab()
 
 
 # ─── Sidebar ────────────────────────────────────────────────────────────────
@@ -151,74 +160,37 @@ def _strategy_editor() -> StrategyConfig:
         st.info("**55–60% win rate.** Simple and clean — stock in long-term uptrend (above 200 EMA) pulls back to 50 EMA and shows a reversal candle. Needs ~200 days of data.", icon="📊")
     elif strategy_style == "sharique_swing":
         st.info("**Approximation** of Sharique Shamsudheen's swing framework — 50 EMA trend filter, 20 EMA pullback, RSI 35–60 zone, bullish reversal, above-avg volume. 2:1 RR.", icon="👤")
+    elif strategy_style == "vishnu_trading_strategy":
+        st.info("**55–60% win rate · Profit Factor 2.2–2.5. Weekly timeframe.** Strong candlestick pattern (morning star / engulfing / piercing / three white soldiers) + MACD negative-zone crossover + volume above 20W avg + price above 12W & 26W EMA + support at 50W or 200W MA. Trailing SL activates at 2R — lets winners run while protecting capital.", icon="📈")
 
-    st.divider()
-
-    # Identity
-    c1, c2, c3 = st.columns(3)
-    name = c1.text_input("Strategy name", key="strategy_name")
-    direction = c2.selectbox("Direction", options=["LONG"], index=0, key="strategy_direction")
-    timeframe = c3.selectbox("Timeframe", options=["day"], index=0, key="strategy_timeframe")
-
-    # EMA settings
-    st.markdown("##### EMA Settings")
-    c1, c2, c3, c4 = st.columns(4)
-    trend_fast = c1.number_input("Trend fast EMA", min_value=5, max_value=400, key="trend_fast_ema")
-    trend_slow = c2.number_input("Trend slow EMA", min_value=10, max_value=500, key="trend_slow_ema")
-    signal_fast = c3.number_input("Signal fast EMA", min_value=3, max_value=100, key="signal_fast_ema")
-    signal_slow = c4.number_input("Signal slow EMA", min_value=5, max_value=150, key="signal_slow_ema")
-
-    # Risk & exit
-    st.markdown("##### Risk & Exit")
-    c1, c2, c3, c4 = st.columns(4)
-    stop_loss_pct = c1.number_input("Stop loss %", min_value=0.5, max_value=25.0, step=0.5, key="stop_loss_pct")
-    rr_ratio = c2.number_input("Risk / reward", min_value=0.5, max_value=10.0, step=0.5, key="risk_reward_ratio")
-    max_hold = c3.number_input("Max holding days", min_value=1, max_value=90, key="max_holding_days")
-    minimum_confidence = c4.slider("Min signal score", min_value=2, max_value=7, key="minimum_confidence")
-
-    # Filters
-    st.markdown("##### Volume & Support Filters")
-    c1, c2, c3 = st.columns(3)
-    volume_window = c1.number_input("Volume window", min_value=5, max_value=100, key="volume_window")
-    volume_multiplier = c2.number_input("Volume multiplier", min_value=0.5, max_value=5.0, step=0.1, key="volume_multiplier")
-    support_window = c3.number_input("Support window", min_value=5, max_value=100, key="support_window")
-    c1, c2 = st.columns(2)
-    support_threshold = c1.number_input("Near support %", min_value=0.5, max_value=15.0, step=0.5, key="support_threshold_pct")
-
-    # Confirmations
-    st.markdown("##### Required Confirmations")
-    flags = st.columns(5)
-    require_macd = flags[0].checkbox("MACD cross", key="require_macd_crossover")
-    require_ema = flags[1].checkbox("EMA alignment", key="require_ema_alignment")
-    require_support = flags[2].checkbox("Support bounce", key="require_support_bounce")
-    require_reversal = flags[3].checkbox("Bullish reversal", key="require_bullish_reversal")
-    require_volume = flags[4].checkbox("Volume confirm", key="require_volume_confirmation")
-
-    notes = st.text_area("Notes", key="strategy_notes", height=80)
-
+    # Build StrategyConfig from preset values stored in session state
+    ss = st.session_state
     return StrategyConfig(
-        name=name,
+        name=ss.get("strategy_name", ""),
         strategy_style=strategy_style,
-        timeframe=timeframe,
-        direction=direction,
-        trend_fast_ema=int(trend_fast),
-        trend_slow_ema=int(trend_slow),
-        signal_fast_ema=int(signal_fast),
-        signal_slow_ema=int(signal_slow),
-        volume_window=int(volume_window),
-        volume_multiplier=float(volume_multiplier),
-        support_window=int(support_window),
-        support_threshold_pct=float(support_threshold),
-        stop_loss_pct=float(stop_loss_pct),
-        risk_reward_ratio=float(rr_ratio),
-        max_holding_days=int(max_hold),
-        minimum_confidence=int(minimum_confidence),
-        require_macd_crossover=require_macd,
-        require_ema_alignment=require_ema,
-        require_support_bounce=require_support,
-        require_bullish_reversal=require_reversal,
-        require_volume_confirmation=require_volume,
-        notes=notes,
+        timeframe=ss.get("strategy_timeframe", "day"),
+        direction=ss.get("strategy_direction", "LONG"),
+        trend_fast_ema=int(ss.get("trend_fast_ema", 50)),
+        trend_slow_ema=int(ss.get("trend_slow_ema", 200)),
+        signal_fast_ema=int(ss.get("signal_fast_ema", 20)),
+        signal_slow_ema=int(ss.get("signal_slow_ema", 50)),
+        volume_window=int(ss.get("volume_window", 20)),
+        volume_multiplier=float(ss.get("volume_multiplier", 1.2)),
+        support_window=int(ss.get("support_window", 20)),
+        support_threshold_pct=float(ss.get("support_threshold_pct", 3.0)),
+        stop_loss_pct=float(ss.get("stop_loss_pct", 8.0)),
+        risk_reward_ratio=float(ss.get("risk_reward_ratio", 2.0)),
+        max_holding_days=int(ss.get("max_holding_days", 20)),
+        minimum_confidence=int(ss.get("minimum_confidence", 4)),
+        require_macd_crossover=bool(ss.get("require_macd_crossover", True)),
+        require_ema_alignment=bool(ss.get("require_ema_alignment", True)),
+        require_support_bounce=bool(ss.get("require_support_bounce", True)),
+        require_bullish_reversal=bool(ss.get("require_bullish_reversal", True)),
+        require_volume_confirmation=bool(ss.get("require_volume_confirmation", True)),
+        use_trailing_stop=bool(ss.get("use_trailing_stop", False)),
+        trailing_trigger_r=float(ss.get("trailing_trigger_r", 2.0)),
+        trailing_stop_pct=float(ss.get("trailing_stop_pct", 7.5)),
+        notes=ss.get("strategy_notes", ""),
         raw_source_excerpt=raw_text[:4000],
     )
 
@@ -417,12 +389,13 @@ def _results_tab() -> None:
 # ─── Strategy comparison ─────────────────────────────────────────────────────
 
 _ALL_COMPARISON_STYLES = {
-    "sharique_swing":       "Sharique Swing",
-    "pullback_20dma":       "Pullback to 20 DMA",
-    "rsi_2_mean_reversion": "RSI-2 Mean Reversion",
-    "momentum_30":          "Momentum 30",
-    "pullback_50ema":       "Pullback to 50 EMA",
-    "breakout_52w":         "52-Week Breakout",
+    "sharique_swing":          "Sharique Swing",
+    "pullback_20dma":          "Pullback to 20 DMA",
+    "rsi_2_mean_reversion":    "RSI-2 Mean Reversion",
+    "momentum_30":             "Momentum 30",
+    "pullback_50ema":          "Pullback to 50 EMA",
+    "breakout_52w":            "52-Week Breakout",
+    "vishnu_trading_strategy": "Vishnu Trading Strategy",
 }
 
 
@@ -846,6 +819,38 @@ def _preset_for_style(base: StrategyConfig, style: str) -> StrategyConfig:
             "Entry: price above 50 EMA (trend), pullback to 20 EMA, RSI cooling to 35–60, "
             "bullish reversal candle, above-average volume. SL: 5% below entry. RR: 2:1."
         )
+    elif style == "vishnu_trading_strategy":
+        preset.name = "Vishnu Trading Strategy"
+        preset.timeframe = "week"
+        preset.trend_fast_ema = 50
+        preset.trend_slow_ema = 200
+        preset.signal_fast_ema = 12
+        preset.signal_slow_ema = 26
+        preset.macd_fast = 12
+        preset.macd_slow = 26
+        preset.macd_signal = 9
+        preset.volume_window = 20
+        preset.volume_multiplier = 1.2
+        preset.support_window = 20
+        preset.support_threshold_pct = 5.0
+        preset.stop_loss_pct = 5.0
+        preset.risk_reward_ratio = 2.0
+        preset.max_holding_days = 16
+        preset.minimum_confidence = 5
+        preset.require_macd_crossover = True
+        preset.require_ema_alignment = True
+        preset.require_support_bounce = False
+        preset.require_bullish_reversal = True
+        preset.require_volume_confirmation = True
+        preset.use_trailing_stop = True
+        preset.trailing_trigger_r = 2.0
+        preset.trailing_stop_pct = 7.5
+        preset.notes = (
+            "Weekly-timeframe multi-factor strategy. "
+            "Entry: strong bullish candlestick pattern + MACD negative-zone crossover "
+            "+ volume above 20W avg + price above 12W & 26W EMA + support at 50W/200W MA. "
+            "Trailing SL: moves to breakeven at 2R, then trails 7.5% below the highest price."
+        )
 
     return preset
 
@@ -871,6 +876,9 @@ def _set_strategy_form_state(config: StrategyConfig) -> None:
     st.session_state["require_support_bounce"] = config.require_support_bounce
     st.session_state["require_bullish_reversal"] = config.require_bullish_reversal
     st.session_state["require_volume_confirmation"] = config.require_volume_confirmation
+    st.session_state["use_trailing_stop"] = config.use_trailing_stop
+    st.session_state["trailing_trigger_r"] = float(config.trailing_trigger_r)
+    st.session_state["trailing_stop_pct"] = float(config.trailing_stop_pct)
     st.session_state["strategy_notes"] = config.notes or ""
 
 
@@ -947,7 +955,7 @@ def _sidebar_data_library() -> None:
 
     # Cache stats in session state — recompute only when explicitly refreshed
     if "data_coverage_stats" not in st.session_state:
-        st.session_state["data_coverage_stats"] = provider.get_coverage_stats(years=3)
+        st.session_state["data_coverage_stats"] = provider.get_coverage_stats(years=5)
     stats = st.session_state["data_coverage_stats"]
 
     cached = stats["cached"]
@@ -974,6 +982,21 @@ def _sidebar_data_library() -> None:
             st.write(", ".join(str(d) for d in stats["missing"]))
         if st.sidebar.button("⬇️ Download missing data", use_container_width=True):
             _run_bulk_download(provider, stats["missing"])
+
+    # Symbol index
+    st.sidebar.divider()
+    st.sidebar.subheader("🗂️ Symbol Index")
+    idx = provider.get_symbol_index_stats(NIFTY_50_SYMBOLS)
+    if idx["built"] == idx["total"] and idx["unpivoted_dates"] == 0:
+        st.sidebar.success(f"All {idx['total']} symbols indexed", icon="⚡")
+    else:
+        if idx["built"] < idx["total"]:
+            st.sidebar.caption(f"{idx['built']}/{idx['total']} symbols built")
+        if idx["unpivoted_dates"] > 0:
+            st.sidebar.caption(f"{idx['unpivoted_dates']} new dates not yet indexed")
+        if st.sidebar.button("🔨 Build Symbol Index", use_container_width=True,
+                             help="One-time pass: reads each Bhavcopy file once, builds per-symbol CSVs for instant backtest loads"):
+            _run_pivot(provider)
 
     # Log viewer
     with st.sidebar.expander("🪵 Recent logs", expanded=False):
@@ -1006,7 +1029,39 @@ def _run_bulk_download(provider: NseBhavcopyDataProvider, missing: list) -> None
     else:
         st.session_state.pop("data_coverage_stats", None)
         st.sidebar.success(f"Done — {downloaded} files downloaded, {skipped} holidays/timeouts skipped.")
+        if downloaded > 0:
+            _run_pivot(provider)
+        else:
+            st.rerun()
+
+
+def _run_pivot(provider: NseBhavcopyDataProvider) -> None:
+    idx = provider.get_symbol_index_stats(NIFTY_50_SYMBOLS)
+    total_dates = idx["unpivoted_dates"]
+    if total_dates == 0:
+        st.sidebar.info("Symbol index already up to date.")
         st.rerun()
+        return
+
+    bar = st.sidebar.progress(0, text="Building symbol index…")
+    status = st.sidebar.empty()
+
+    def on_progress(done: int, total: int, current_date) -> None:
+        bar.progress(int(done / total * 100), text=f"Indexing {current_date}  ({done}/{total})")
+        status.caption(f"Processing: {current_date}")
+
+    try:
+        processed = provider.pivot_bhavcopy_to_symbols(NIFTY_50_SYMBOLS, on_progress=on_progress)
+    except Exception as exc:
+        bar.empty()
+        status.empty()
+        st.sidebar.error(f"Pivot failed: {exc}")
+        return
+
+    bar.empty()
+    status.empty()
+    st.sidebar.success(f"Symbol index built — {processed} dates processed.")
+    st.rerun()
 
 
 # ─── Shared helpers ───────────────────────────────────────────────────────────
@@ -1030,3 +1085,207 @@ def _build_provider(source: str):
             ),
         )
     return NseBhavcopyDataProvider(cache_dir=CACHE_DIR)
+
+
+# ─── Paper Trading tab ────────────────────────────────────────────────────────
+
+def _paper_trading_tab() -> None:
+    st.header("📋 Paper Trading")
+    st.caption("Evaluate today's signals against the selected strategy, enter trades and record exits in the Swing Planner.")
+
+    excel_path: Path = st.session_state.get("excel_path", DEFAULT_EXCEL_PATH)
+    strategy: StrategyConfig = st.session_state.get("_strategy") or StrategyConfig()
+    source = st.session_state.get("data_source", "nse_bhavcopy")
+    provider = _build_provider(source)
+    workbook_settings = _load_workbook_defaults(excel_path)
+
+    capital = float(workbook_settings["capital"])
+    risk_pct = float(workbook_settings["risk_pct"])
+    max_positions = int(workbook_settings["num_trades"])
+
+    # ── Open trades ──────────────────────────────────────────────────────────
+    st.subheader("📂 Open Trades")
+
+    import openpyxl
+    open_trades: list[dict] = []
+    if excel_path.exists():
+        try:
+            wb = openpyxl.load_workbook(excel_path, data_only=True)
+            open_trades = read_open_trades(wb)
+        except Exception as exc:
+            st.warning(f"Could not read Swing Planner: {exc}")
+    else:
+        st.info(f"Swing Planner not found at `{excel_path}`. Create it first or update the path in the sidebar.", icon="ℹ️")
+
+    # Split into NIFTY 50 universe vs. outside
+    universe_set = set(NIFTY_50_SYMBOLS)
+    open_in_universe = [t for t in open_trades if t["stock"] in universe_set]
+    open_outside_universe = [t for t in open_trades if t["stock"] not in universe_set]
+
+    open_slots = max(0, max_positions - len(open_trades))
+
+    # Auto-fetch latest prices for open trade symbols so exits show immediately on page load
+    if open_in_universe and "paper_price_frames" not in st.session_state:
+        scan_start = date.today() - timedelta(days=300)
+        frames: dict = {}
+        with st.spinner("Loading latest prices for open trades…"):
+            for t in open_in_universe:
+                sym = t["stock"]
+                try:
+                    frames[sym] = provider.get_daily_history(sym, scan_start, date.today())
+                except Exception:
+                    pass
+        if frames:
+            st.session_state["paper_price_frames"] = frames
+
+    if not open_trades:
+        st.info("No open trades in the Swing Planner.", icon="📭")
+    else:
+        # Warn about any outside-universe symbols
+        if open_outside_universe:
+            names = ", ".join(t["stock"] for t in open_outside_universe)
+            st.warning(
+                f"**{names}** {'is' if len(open_outside_universe) == 1 else 'are'} not in the NIFTY 50 universe — "
+                "exit recommendations cannot be generated automatically. "
+                "Update the exit price manually in the Swing Planner.",
+                icon="⚠️",
+            )
+
+        paper_frames: dict | None = st.session_state.get("paper_price_frames")
+        exits: list[ExitRecommendation] = []
+        if paper_frames:
+            exits = evaluate_exits(open_in_universe, paper_frames, strategy, date.today())
+
+        exit_map = {e.symbol: e for e in exits}
+        rows = []
+        for t in open_trades:
+            sym = t["stock"]
+            ex = exit_map.get(sym)
+            in_universe = sym in universe_set
+            rows.append({
+                "Symbol": sym,
+                "Entry Date": t["entry_date"],
+                "Entry ₹": t["entry"],
+                "SL ₹": t["stop_loss"],
+                "Target ₹": t["target"],
+                "Qty": t["quantity"],
+                "Latest ₹": f"₹{ex.latest_close:,.2f}" if ex else "—",
+                "P&L": f"{'▲' if ex and ex.pnl >= 0 else '▼'} ₹{ex.pnl:,.0f} ({ex.pnl_pct:+.1f}%)" if ex else "—",
+                "Days": ex.holding_days if ex else "—",
+                "Action": (
+                    {"HOLD": "🟡 HOLD", "TARGET": "🟢 EXIT — Target hit",
+                     "STOP_LOSS": "🔴 EXIT — Stop loss", "MAX_DAYS": "🟠 EXIT — Max days"}.get(ex.reason, "—")
+                    if ex else ("⚠️ Outside NIFTY 50" if not in_universe else "—")
+                ),
+            })
+
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+        exits_to_action = [e for e in exits if e.reason != "HOLD"]
+        if exits_to_action and excel_path.exists():
+            st.warning(f"**{len(exits_to_action)} trade(s) should be closed** based on latest prices.", icon="⚠️")
+            if st.button(f"✅ Execute {len(exits_to_action)} Exit(s) in Swing Planner", type="primary"):
+                try:
+                    with WorkbookManager(excel_path) as wbm:
+                        for ex in exits_to_action:
+                            write_trade_exit(wbm.workbook, ex.row, ex.latest_close, ex.latest_date.isoformat())
+                    st.success(f"Exits recorded for: {', '.join(e.symbol for e in exits_to_action)}", icon="✅")
+                    st.rerun()
+                except Exception as exc:
+                    st.error(f"Failed to write exits: {exc}")
+
+    st.metric("Open slots", f"{open_slots} / {max_positions}", delta=f"{len(open_trades)} currently open", delta_color="off")
+
+    # ── Signal scan ──────────────────────────────────────────────────────────
+    st.subheader("🔍 Signal Scanner")
+    st.caption(f"Strategy: **{strategy.name}** · Style: `{strategy.strategy_style}` · Min confidence: {strategy.minimum_confidence}/7")
+
+    scan_days = st.slider("Lookback days for scan", min_value=100, max_value=500, value=300, step=50,
+                          help="How many days of history to load for indicator calculation")
+
+    col_scan, col_clear = st.columns([3, 1])
+    scan_clicked = col_scan.button("🔍 Scan for Signals", type="primary", use_container_width=True)
+    if col_clear.button("🗑️ Clear scan", use_container_width=True):
+        st.session_state.pop("paper_price_frames", None)
+        st.session_state.pop("paper_signals", None)
+        st.session_state.pop("paper_exits", None)
+        st.rerun()
+
+    if scan_clicked:
+        if not provider.available():
+            st.error("Data source not configured. Check sidebar settings.")
+        else:
+            scan_start = date.today() - timedelta(days=scan_days)
+            scan_end = date.today()
+            progress = st.progress(0, text="Loading market data for scan…")
+            frames = {}
+            for i, symbol in enumerate(NIFTY_50_SYMBOLS):
+                try:
+                    frames[symbol] = provider.get_daily_history(symbol, scan_start, scan_end)
+                except Exception:
+                    pass
+                progress.progress((i + 1) / len(NIFTY_50_SYMBOLS), text=f"Loading {symbol}… ({i+1}/{len(NIFTY_50_SYMBOLS)})")
+
+            progress.progress(100, text="Evaluating signals…")
+            signals = scan_signals(frames, strategy, capital, risk_pct, open_slots=-1)
+            st.session_state["paper_price_frames"] = frames
+            st.session_state["paper_signals"] = signals
+            # Refresh exit recommendations with new data
+            if open_trades:
+                st.session_state["paper_exits"] = evaluate_exits(open_trades, frames, strategy, date.today())
+            progress.empty()
+            st.rerun()
+
+    signals: list[PaperSignal] = st.session_state.get("paper_signals", [])
+
+    if not signals and "paper_price_frames" in st.session_state:
+        st.info("No signals match the strategy criteria today.", icon="🔎")
+
+    if signals:
+        st.success(f"**{len(signals)} signal(s)** found — {open_slots} open slot(s) available.", icon="📡")
+
+        sig_rows = []
+        for s in signals:
+            sig_rows.append({
+                "Symbol": s.symbol,
+                "Date": s.signal_date,
+                "Close ₹": f"₹{s.close:,.2f}",
+                "SL ₹": f"₹{s.stop_loss:,.2f}",
+                "Target ₹": f"₹{s.target:,.2f}",
+                "R:R": f"1:{strategy.risk_reward_ratio:.1f}",
+                "Qty": s.quantity,
+                "Score": f"{s.score}/7",
+                "Confidence": s.confidence,
+                "Trend": s.market_trend,
+                "Volume": s.avg_volume,
+                "MACD": s.macd_crossover,
+                "Reversal": s.bullish_reversal,
+            })
+        st.dataframe(pd.DataFrame(sig_rows), use_container_width=True, hide_index=True)
+
+        # Only allow entering up to available open slots
+        tradeable = signals[:open_slots] if open_slots > 0 else []
+        if open_slots <= 0:
+            st.warning("No open slots — close existing trades before entering new ones.", icon="🚫")
+        elif excel_path.exists():
+            enter_count = st.number_input(
+                "How many top signals to enter?",
+                min_value=1, max_value=len(tradeable),
+                value=min(len(tradeable), open_slots),
+            )
+            if st.button(f"▶️ Enter {enter_count} Trade(s) in Swing Planner", type="primary"):
+                try:
+                    entered = []
+                    with WorkbookManager(excel_path) as wbm:
+                        for sig in tradeable[:enter_count]:
+                            row_num = append_trade_row(wbm.workbook, signal_to_trade_row(sig))
+                            entered.append(f"{sig.symbol} @ ₹{sig.close:,.2f} (row {row_num})")
+                    st.success(f"Entered {len(entered)} trade(s):\n" + "\n".join(f"• {e}" for e in entered), icon="✅")
+                    # Clear scan so open trades refresh on next rerun
+                    st.session_state.pop("paper_signals", None)
+                    st.session_state.pop("paper_price_frames", None)
+                    st.rerun()
+                except Exception as exc:
+                    st.error(f"Failed to write trades: {exc}")
+        else:
+            st.warning(f"Swing Planner not found at `{excel_path}` — trades cannot be entered.", icon="⚠️")

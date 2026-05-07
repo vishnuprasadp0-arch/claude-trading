@@ -222,11 +222,105 @@ class NseBhavcopyDataProvider(HistoricalDataProvider):
         logger.info("Bulk download done: %d downloaded, %d skipped.", downloaded, skipped)
         return downloaded, skipped
 
+    @property
+    def _symbols_dir(self) -> Path:
+        d = self.cache_dir / "symbols"
+        d.mkdir(exist_ok=True)
+        return d
+
+    @property
+    def _pivot_index_file(self) -> Path:
+        return self.cache_dir / "_pivot_index.json"
+
+    def get_pivoted_dates(self) -> set[date]:
+        if not self._pivot_index_file.exists():
+            return set()
+        return {date.fromisoformat(d) for d in json.loads(self._pivot_index_file.read_text())}
+
+    def _record_pivoted_dates(self, new_dates: set[date]) -> None:
+        all_dates = self.get_pivoted_dates() | new_dates
+        self._pivot_index_file.write_text(
+            json.dumps(sorted(d.isoformat() for d in all_dates))
+        )
+
+    def get_symbol_index_stats(self, symbols: list[str]) -> dict:
+        built = [s for s in symbols if (self._symbols_dir / f"{s.upper()}.csv").exists()]
+        unpivoted = self.get_cached_dates() - self.get_pivoted_dates()
+        return {
+            "built": len(built),
+            "total": len(symbols),
+            "unpivoted_dates": len(unpivoted),
+        }
+
+    def pivot_bhavcopy_to_symbols(self, symbols: list[str], on_progress=None) -> int:
+        """Read each un-pivoted Bhavcopy file once and build/update per-symbol CSVs."""
+        cached_dates = sorted(self.get_cached_dates())
+        to_process = [d for d in cached_dates if d not in self.get_pivoted_dates()]
+
+        if not to_process:
+            return 0
+
+        symbols_upper = {s.upper() for s in symbols}
+        new_rows: dict[str, list[dict]] = {s.upper(): [] for s in symbols}
+
+        for i, trade_date in enumerate(to_process):
+            bhavcopy = self._load_bhavcopy_for_date(trade_date)
+            if bhavcopy is not None and not bhavcopy.empty:
+                sym_col = self._resolve_column(bhavcopy.columns, "symbol")
+                open_col = self._resolve_column(bhavcopy.columns, "open")
+                high_col = self._resolve_column(bhavcopy.columns, "high")
+                low_col = self._resolve_column(bhavcopy.columns, "low")
+                close_col = self._resolve_column(bhavcopy.columns, "close")
+                vol_col = self._resolve_column(bhavcopy.columns, "volume")
+
+                filtered = bhavcopy[bhavcopy[sym_col].astype(str).str.upper().isin(symbols_upper)]
+                for _, row in filtered.iterrows():
+                    sym = str(row[sym_col]).upper()
+                    if sym in new_rows:
+                        new_rows[sym].append({
+                            "date": pd.Timestamp(trade_date),
+                            "open": float(row[open_col]),
+                            "high": float(row[high_col]),
+                            "low": float(row[low_col]),
+                            "close": float(row[close_col]),
+                            "volume": float(row[vol_col]),
+                        })
+
+            if on_progress:
+                on_progress(i + 1, len(to_process), trade_date)
+
+        updated = 0
+        for sym, rows in new_rows.items():
+            if not rows:
+                continue
+            sym_file = self._symbols_dir / f"{sym}.csv"
+            new_df = pd.DataFrame(rows).sort_values("date")
+            if sym_file.exists():
+                existing = pd.read_csv(sym_file, parse_dates=["date"])
+                new_df = pd.concat([existing, new_df]).drop_duplicates("date").sort_values("date")
+            new_df.to_csv(sym_file, index=False)
+            updated += 1
+
+        self._record_pivoted_dates(set(to_process))
+        logger.info("Pivot done: %d dates → %d symbol CSVs updated.", len(to_process), updated)
+        return len(to_process)
+
     def get_daily_history(self, symbol: str, start_date: date, end_date: date) -> pd.DataFrame:
+        # Fast path: use pre-built per-symbol CSV, slice to date range in memory
+        sym_file = self._symbols_dir / f"{symbol.upper()}.csv"
+        if sym_file.exists():
+            df = pd.read_csv(sym_file, parse_dates=["date"])
+            mask = (df["date"].dt.date >= start_date) & (df["date"].dt.date <= end_date)
+            sliced = df[mask][["date", "open", "high", "low", "close", "volume"]].reset_index(drop=True)
+            if not sliced.empty:
+                return sliced
+
+        # Legacy cache: exact date-range CSV built by earlier runs
         cache_file = self.cache_dir / f"{symbol}_{start_date}_{end_date}.csv"
         if cache_file.exists():
             return KiteHistoricalDataProvider._read_cached_csv(cache_file)
 
+        # Slow path: read date-by-date from individual Bhavcopy files
         rows: list[dict] = []
         current = start_date
         while current <= end_date:

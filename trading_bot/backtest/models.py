@@ -26,6 +26,9 @@ class StrategyConfig:
     stop_loss_pct: float = 8.0
     risk_reward_ratio: float = 2.0
     max_holding_days: int = 20
+    use_trailing_stop: bool = False
+    trailing_trigger_r: float = 2.0
+    trailing_stop_pct: float = 7.5
     minimum_confidence: int = 4
     require_macd_crossover: bool = True
     require_ema_alignment: bool = True

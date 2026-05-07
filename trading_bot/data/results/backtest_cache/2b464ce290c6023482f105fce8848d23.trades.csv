@@ -1,0 +1,24 @@
+symbol,signal_date,entry_date,exit_date,side,entry_price,exit_price,stop_loss,target_price,quantity,pnl,pnl_pct,holding_days,confidence,score,market_trend,entry_point,avg_volume,macd_crossover,ema_crossover,price_position,bullish_reversal,comments
+SBIN,2026-01-20,2026-01-21,2026-02-11,LONG,1032.0,1186.8,970.08,1186.8,8,1238.4,15.0,15,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+TATASTEEL,2026-02-06,2026-02-09,2026-03-09,LONG,202.0,189.88,189.88,232.3,41,-496.92,-6.0,20,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+BHARTIARTL,2026-02-10,2026-02-11,2026-02-27,LONG,2012.9,1892.13,1892.13,2314.82,4,-483.08,-6.0,13,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+SHRIRAMFIN,2026-02-11,2026-02-12,2026-03-04,LONG,1053.5,990.29,990.29,1211.53,7,-442.47,-6.0,14,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+SBIN,2026-02-12,2026-02-13,2026-03-09,LONG,1189.0,1117.66,1117.66,1367.35,7,-499.38,-6.0,16,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+RELIANCE,2026-02-12,2026-02-13,2026-03-02,LONG,1445.5,1358.77,1358.77,1662.33,5,-433.65,-6.0,12,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+BHARTIARTL,2026-03-02,2026-03-04,2026-04-02,LONG,1861.1,1749.43,1749.43,2140.27,4,-446.68,-6.0,20,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+M&M,2026-03-04,2026-03-05,2026-03-12,LONG,3264.3,3068.44,3068.44,3753.95,2,-391.72,-6.0,8,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+BPCL,2026-03-05,2026-03-06,2026-03-09,LONG,362.05,340.33,340.33,416.35,23,-499.56,-6.0,2,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+BPCL,2026-03-10,2026-03-11,2026-03-16,LONG,326.0,306.44,306.44,374.9,25,-489.0,-6.0,4,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+SHRIRAMFIN,2026-03-10,2026-03-11,2026-03-13,LONG,1062.9,999.13,999.13,1222.33,7,-446.39,-6.0,3,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+AXISBANK,2026-03-10,2026-03-11,2026-03-13,LONG,1310.0,1231.4,1231.4,1506.5,6,-471.6,-6.0,3,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+BRITANNIA,2026-03-13,2026-03-16,2026-03-24,LONG,5808.5,5459.99,5459.99,6679.78,1,-348.51,-6.0,7,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+JSWSTEEL,2026-03-13,2026-03-16,2026-04-16,LONG,1121.5,1214.9,1054.21,1289.72,7,653.8,8.33,20,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+ADANIPORTS,2026-03-13,2026-03-16,2026-04-16,LONG,1356.6,1549.8,1275.2,1560.1,6,1159.2,14.24,20,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+LT,2026-03-16,2026-03-17,2026-04-08,LONG,3478.0,3999.7,3269.32,3999.7,2,1043.4,15.0,14,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+TITAN,2026-03-24,2026-03-25,2026-04-16,LONG,3950.0,4542.5,3713.0,4542.5,2,1185.0,15.0,13,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+DRREDDY,2026-04-06,2026-04-07,2026-05-06,LONG,1208.0,1311.0,1135.52,1389.2,6,618.0,8.53,20,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+LT,2026-04-09,2026-04-10,2026-05-06,LONG,3932.0,4008.5,3696.08,4521.8,2,153.0,1.95,17,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+SHRIRAMFIN,2026-04-16,2026-04-17,2026-04-28,LONG,1022.0,960.68,960.68,1175.3,8,-490.56,-6.0,8,Medium,4,Up,Weak,Low,N/A,Trend OK,Below breakout,N/A,Signal score 4/7
+ADANIPORTS,2026-04-17,2026-04-20,2026-05-06,LONG,1572.4,1748.3,1478.06,1808.25,5,879.5,11.19,12,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+TITAN,2026-04-17,2026-04-20,2026-05-06,LONG,4532.1,4359.6,4260.17,5211.93,1,-172.5,-3.81,12,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7
+INDUSINDBK,2026-04-28,2026-04-29,2026-05-06,LONG,891.0,946.75,837.54,1024.65,9,501.75,6.26,5,Medium,5,Up,Weak,Good,N/A,Trend OK,Below breakout,N/A,Signal score 5/7

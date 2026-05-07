@@ -16,6 +16,8 @@ def build_feature_frame(df: pd.DataFrame, config: StrategyConfig) -> pd.DataFram
     macd_slow = frame["close"].ewm(span=config.macd_slow, adjust=False).mean()
     frame["macd_line"] = macd_fast - macd_slow
     frame["macd_signal"] = frame["macd_line"].ewm(span=config.macd_signal, adjust=False).mean()
+    frame["macd_hist"] = frame["macd_line"] - frame["macd_signal"]
+    frame["macd_hist_prev"] = frame["macd_hist"].shift(1)
 
     frame["avg_volume"] = frame["volume"].rolling(config.volume_window).mean()
     frame["volume_ratio"] = frame["volume"] / frame["avg_volume"].replace(0, pd.NA)
@@ -54,6 +56,68 @@ def build_feature_frame(df: pd.DataFrame, config: StrategyConfig) -> pd.DataFram
     )
     frame["bullish_reversal"] = frame["bullish_engulfing"] | frame["hammer"]
 
+    # ── Extended candlestick patterns (used by Vishnu Trading Strategy) ──────
+    body = (frame["close"] - frame["open"]).abs()
+    candle_range = frame["high"] - frame["low"]
+    upper_wick = frame["high"] - frame[["open", "close"]].max(axis=1)
+    lower_wick = frame[["open", "close"]].min(axis=1) - frame["low"]
+
+    frame["inverted_hammer"] = (
+        (frame["prev_close"] < frame["prev_open"]) &   # prior candle bearish
+        (candle_range > 0) &
+        (body <= candle_range * 0.35) &                # small real body
+        (upper_wick >= body * 2.0) &                   # long upper wick
+        (lower_wick <= body * 0.1)                     # minimal lower wick
+    )
+
+    # Morning Star: 3-candle — needs prev-2 data via double shift
+    prev2_open = frame["open"].shift(2)
+    prev2_close = frame["close"].shift(2)
+    prev2_body = (prev2_close - prev2_open).abs()
+    prev_body = (frame["prev_close"] - frame["prev_open"]).abs()
+    prev_candle_range = (frame["prev_high"] - frame["prev_low"])
+    frame["morning_star"] = (
+        (prev2_close < prev2_open) &                               # candle-2 bearish
+        (prev_body <= prev_candle_range * 0.3) &                   # candle-1 small (indecision)
+        (frame["close"] > frame["open"]) &                         # today bullish
+        (frame["close"] > (prev2_open + prev2_close) / 2)          # closes above midpoint of candle-2
+    )
+
+    frame["piercing_line"] = (
+        (frame["prev_close"] < frame["prev_open"]) &               # prior bearish
+        (frame["open"] < frame["prev_low"]) &                      # gap down open
+        (frame["close"] > frame["open"]) &                         # today bullish
+        (frame["close"] > (frame["prev_open"] + frame["prev_close"]) / 2) &  # closes above midpoint
+        (frame["close"] < frame["prev_open"])                      # but not full engulf
+    )
+
+    prev2_close_bull = frame["close"].shift(2)
+    prev2_open_bull = frame["open"].shift(2)
+    frame["three_white_soldiers"] = (
+        (prev2_close_bull > prev2_open_bull) &                     # candle-2 bullish
+        (frame["prev_close"] > frame["prev_open"]) &               # candle-1 bullish
+        (frame["close"] > frame["open"]) &                         # today bullish
+        (frame["close"] > frame["prev_close"]) &                   # each higher than last
+        (frame["prev_close"] > prev2_close_bull) &
+        # each closes in upper half of its range
+        (frame["close"] >= frame["low"] + (frame["high"] - frame["low"]) * 0.6) &
+        (frame["prev_close"] >= frame["prev_low"] + (frame["prev_high"] - frame["prev_low"]) * 0.6)
+    )
+
+    frame["double_bottom"] = (
+        (frame["low"] <= frame["rolling_low"] * 1.01) &            # near prior rolling low
+        (frame["close"] > frame["prev_close"]) &                   # bouncing up
+        (frame["close"] > frame["open"])                           # bullish candle
+    )
+
+    frame["strong_bullish_pattern"] = (
+        frame["morning_star"] |
+        frame["piercing_line"] |
+        frame["three_white_soldiers"] |
+        frame["bullish_engulfing"] |
+        frame["double_bottom"]
+    )
+
     frame["rsi_2"] = _rsi(frame["close"], 2)
     frame["atr_14"] = _atr(frame["high"], frame["low"], frame["close"], 14)
     # Narrow range: 10-day close range relative to 20-day average — used for consolidation detection
@@ -76,6 +140,21 @@ def _atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int) -> pd.S
         (low - prev_close).abs(),
     ], axis=1).max(axis=1)
     return tr.ewm(span=period, adjust=False).mean()
+
+
+def resample_to_weekly(df: pd.DataFrame) -> pd.DataFrame:
+    """Resample daily OHLCV to weekly (week ending Friday). Drops incomplete weeks."""
+    w = df.copy()
+    w["date"] = pd.to_datetime(w["date"])
+    w = w.set_index("date")
+    weekly = w.resample("W-FRI").agg({
+        "open": "first",
+        "high": "max",
+        "low": "min",
+        "close": "last",
+        "volume": "sum",
+    }).dropna(subset=["close"]).reset_index()
+    return weekly
 
 
 def _rsi(series: pd.Series, period: int) -> pd.Series:

@@ -1,0 +1,116 @@
+symbol,signal_date,entry_date,exit_date,side,entry_price,exit_price,stop_loss,target_price,quantity,pnl,pnl_pct,holding_days,confidence,score,market_trend,entry_point,avg_volume,macd_crossover,ema_crossover,price_position,bullish_reversal,comments
+HEROMOTOCO,2025-07-16,2025-07-17,2025-07-25,LONG,4437.0,4215.15,4215.15,4880.7,1,-221.85,-5.0,7,High,7,Up,Good,Good,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+SHRIRAMFIN,2025-07-16,2025-07-17,2025-07-24,LONG,670.0,636.5,636.5,737.0,11,-368.5,-5.0,6,High,7,Up,Good,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+ADANIPORTS,2025-07-16,2025-07-17,2025-07-28,LONG,1455.0,1382.25,1382.25,1600.5,5,-363.75,-5.0,8,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+ASIANPAINT,2025-07-16,2025-07-17,2025-07-30,LONG,2404.1,2415.8,2283.89,2644.52,3,35.1,0.49,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+BAJAJFINSV,2025-07-16,2025-07-17,2025-07-25,LONG,2037.6,1935.72,1935.72,2241.36,3,-305.64,-5.0,7,Medium,5,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+ETERNAL,2025-07-25,2025-07-28,2025-08-07,LONG,310.0,294.5,294.5,341.0,24,-372.0,-5.0,9,Medium,4,Up,Weak,Good,MACD cross,Away from 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+BAJAJFINSV,2025-07-28,2025-07-29,2025-08-11,LONG,1977.8,1922.8,1878.91,2175.58,3,-165.0,-2.78,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+HEROMOTOCO,2025-07-28,2025-07-29,2025-08-11,LONG,4290.0,4562.2,4075.5,4719.0,1,272.2,6.34,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+BEL,2025-07-29,2025-07-30,2025-08-12,LONG,390.95,380.35,371.4,430.05,19,-201.4,-2.71,10,Medium,5,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+ASIANPAINT,2025-07-31,2025-08-01,2025-08-14,LONG,2378.0,2528.7,2259.1,2615.8,3,452.1,6.34,10,High,7,Up,Good,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+ICICIBANK,2025-08-07,2025-08-08,2025-08-22,LONG,1445.9,1436.4,1373.61,1590.48,5,-47.5,-0.66,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+BEL,2025-08-13,2025-08-14,2025-08-26,LONG,387.85,368.46,368.46,426.63,19,-368.41,-5.0,8,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+EICHERMOT,2025-08-13,2025-08-14,2025-08-29,LONG,5710.0,6103.0,5424.5,6281.0,1,393.0,6.88,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+SBIN,2025-08-13,2025-08-14,2025-08-29,LONG,822.0,802.5,780.9,904.2,9,-175.5,-2.37,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+TATASTEEL,2025-08-18,2025-08-19,2025-09-02,LONG,158.5,158.39,150.57,174.36,47,-5.17,-0.07,10,High,7,Up,Good,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+ASIANPAINT,2025-08-22,2025-08-25,2025-09-08,LONG,2516.0,2530.8,2390.2,2767.6,2,29.6,0.59,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+HDFCLIFE,2025-08-26,2025-08-28,2025-09-10,LONG,775.5,777.6,736.72,853.06,9,18.9,0.27,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+JIOFIN,2025-08-29,2025-09-01,2025-09-12,LONG,311.7,311.2,296.11,342.88,24,-12.0,-0.16,10,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+M&M,2025-09-01,2025-09-02,2025-09-08,LONG,3325.0,3657.5,3158.75,3657.5,2,665.0,10.0,5,High,7,Up,Good,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+SBILIFE,2025-09-03,2025-09-04,2025-09-04,LONG,1890.0,1795.5,1795.5,2079.0,3,-283.5,-5.0,1,High,7,Up,Good,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+GRASIM,2025-09-04,2025-09-05,2025-09-18,LONG,2810.0,2878.8,2669.5,3091.0,2,137.6,2.45,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+ASIANPAINT,2025-09-09,2025-09-10,2025-09-23,LONG,2537.3,2446.9,2410.43,2791.04,2,-180.8,-3.56,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+TATAMOTORS,2025-09-10,2025-09-11,2025-09-24,LONG,710.2,682.95,674.69,781.22,10,-272.5,-3.84,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+BAJAJFINSV,2025-09-11,2025-09-12,2025-09-25,LONG,2036.1,2035.6,1934.29,2239.72,3,-1.5,-0.02,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+TATACONSUM,2025-09-15,2025-09-16,2025-09-29,LONG,1103.0,1123.1,1047.85,1213.3,6,120.6,1.82,10,High,7,Up,Good,Good,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+HINDALCO,2025-09-18,2025-09-19,2025-10-03,LONG,752.0,780.35,714.4,827.2,9,255.15,3.77,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+ADANIENT,2025-09-23,2025-09-24,2025-09-29,LONG,2655.0,2522.25,2522.25,2920.5,2,-265.5,-5.0,4,Medium,4,Up,Weak,Good,MACD cross,Away from 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+ASIANPAINT,2025-09-24,2025-09-25,2025-09-29,LONG,2458.5,2335.57,2335.57,2704.36,3,-368.79,-5.0,3,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+NTPC,2025-09-25,2025-09-26,2025-10-10,LONG,340.5,339.7,323.47,374.56,22,-17.6,-0.23,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+AXISBANK,2025-09-29,2025-09-30,2025-10-14,LONG,1130.0,1176.8,1073.5,1243.0,6,280.8,4.14,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+DRREDDY,2025-09-29,2025-09-30,2025-10-14,LONG,1235.1,1237.3,1173.34,1358.62,6,13.2,0.18,10,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+ETERNAL,2025-09-30,2025-10-01,2025-10-15,LONG,325.5,354.35,309.22,358.06,23,663.55,8.86,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+BRITANNIA,2025-10-03,2025-10-06,2025-10-17,LONG,6015.5,6083.0,5714.72,6617.06,1,67.5,1.12,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+JSWSTEEL,2025-10-10,2025-10-13,2025-10-27,LONG,1160.9,1150.6,1102.86,1276.98,6,-61.8,-0.89,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+ADANIPORTS,2025-10-14,2025-10-15,2025-10-29,LONG,1430.0,1454.8,1358.5,1573.0,5,124.0,1.73,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+BAJAJFINSV,2025-10-14,2025-10-15,2025-10-29,LONG,2024.5,2137.0,1923.27,2226.96,3,337.5,5.56,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+CIPLA,2025-10-15,2025-10-16,2025-10-30,LONG,1565.0,1540.1,1486.75,1721.5,4,-99.6,-1.59,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+ETERNAL,2025-10-17,2025-10-20,2025-10-23,LONG,345.0,327.75,327.75,379.5,21,-362.25,-5.0,3,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+HINDALCO,2025-10-23,2025-10-24,2025-11-06,LONG,811.35,770.78,770.78,892.49,9,-365.13,-5.0,9,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 5/7
+DRREDDY,2025-10-27,2025-10-28,2025-10-30,LONG,1283.9,1219.7,1219.7,1412.3,5,-321.0,-5.0,3,Medium,5,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+BEL,2025-10-29,2025-10-30,2025-11-13,LONG,407.8,419.8,387.41,448.58,18,216.0,2.94,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+HEROMOTOCO,2025-10-29,2025-10-30,2025-11-04,LONG,5570.5,5291.97,5291.97,6127.56,1,-278.53,-5.0,4,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+ADANIPORTS,2025-10-30,2025-10-31,2025-11-14,LONG,1457.9,1512.7,1385.01,1603.68,5,274.0,3.76,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+BAJAJFINSV,2025-10-30,2025-10-31,2025-11-11,LONG,2115.0,2009.25,2009.25,2326.5,3,-317.25,-5.0,7,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+AXISBANK,2025-11-04,2025-11-06,2025-11-19,LONG,1225.0,1270.4,1163.75,1347.5,6,272.4,3.71,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+HEROMOTOCO,2025-11-06,2025-11-07,2025-11-18,LONG,5305.0,5835.5,5039.75,5835.5,1,530.5,10.0,8,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+RELIANCE,2025-11-11,2025-11-12,2025-11-25,LONG,1505.0,1539.7,1429.75,1655.5,4,138.8,2.31,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+INFY,2025-11-13,2025-11-14,2025-11-27,LONG,1520.0,1566.4,1444.0,1672.0,4,185.6,3.05,10,Medium,4,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI not in zone,No reversal,Signal score 4/7
+BEL,2025-11-14,2025-11-17,2025-11-24,LONG,427.95,406.55,406.55,470.75,17,-363.8,-5.0,6,Medium,5,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+ADANIPORTS,2025-11-18,2025-11-19,2025-12-02,LONG,1499.0,1518.1,1424.05,1648.9,5,95.5,1.27,10,Medium,4,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI not in zone,No reversal,Signal score 4/7
+BPCL,2025-11-19,2025-11-20,2025-12-03,LONG,367.0,358.4,348.65,403.7,20,-172.0,-2.34,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+HINDALCO,2025-11-24,2025-11-25,2025-12-08,LONG,777.95,819.45,739.05,855.75,9,373.5,5.33,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+BEL,2025-11-25,2025-11-26,2025-12-08,LONG,410.25,389.74,389.74,451.27,18,-369.18,-5.0,9,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+KOTAKBANK,2025-11-27,2025-11-28,2025-12-11,LONG,2119.0,2180.2,2013.05,2330.9,3,183.6,2.89,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+ADANIPORTS,2025-12-03,2025-12-04,2025-12-17,LONG,1497.7,1486.3,1422.82,1647.46,5,-57.0,-0.76,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+RELIANCE,2025-12-03,2025-12-04,2025-12-17,LONG,1536.0,1544.4,1459.2,1689.6,4,33.6,0.55,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+AXISBANK,2025-12-08,2025-12-09,2025-12-22,LONG,1272.0,1233.2,1208.4,1399.2,5,-194.0,-3.05,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+INDUSINDBK,2025-12-08,2025-12-09,2025-12-22,LONG,841.45,856.4,799.38,925.59,8,119.6,1.78,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+SBIN,2025-12-11,2025-12-12,2025-12-26,LONG,966.0,966.3,917.7,1062.6,7,2.1,0.03,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+ADANIPORTS,2025-12-18,2025-12-19,2026-01-02,LONG,1495.0,1489.5,1420.25,1644.5,5,-27.5,-0.37,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+BRITANNIA,2025-12-18,2025-12-19,2026-01-02,LONG,6020.0,5984.5,5719.0,6622.0,1,-35.5,-0.59,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+M&M,2025-12-22,2025-12-23,2026-01-06,LONG,3619.2,3785.6,3438.24,3981.12,2,332.8,4.6,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+HDFCLIFE,2025-12-22,2025-12-23,2026-01-06,LONG,759.95,777.85,721.95,835.95,9,161.1,2.36,10,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+BHARTIARTL,2025-12-26,2025-12-29,2026-01-09,LONG,2105.4,2027.1,2000.13,2315.94,3,-234.9,-3.72,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+TITAN,2026-01-02,2026-01-05,2026-01-19,LONG,4051.7,4144.1,3849.11,4456.88,1,92.4,2.28,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+BRITANNIA,2026-01-05,2026-01-06,2026-01-20,LONG,6040.0,5884.0,5738.0,6644.0,1,-156.0,-2.58,10,High,7,Up,Good,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+BPCL,2026-01-06,2026-01-07,2026-01-08,LONG,371.55,352.97,352.97,408.71,20,-371.6,-5.0,2,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+DRREDDY,2026-01-06,2026-01-07,2026-01-13,LONG,1252.6,1189.97,1189.97,1377.86,5,-313.15,-5.0,5,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+INDUSINDBK,2026-01-08,2026-01-09,2026-01-23,LONG,878.05,892.45,834.15,965.85,8,115.2,1.64,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+AXISBANK,2026-01-09,2026-01-12,2026-01-27,LONG,1274.7,1315.8,1210.96,1402.18,5,205.5,3.22,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+HCLTECH,2026-01-13,2026-01-14,2026-01-29,LONG,1665.0,1721.6,1581.75,1831.5,4,226.4,3.4,10,High,7,Up,Good,Good,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+ASIANPAINT,2026-01-19,2026-01-20,2026-01-27,LONG,2740.0,2603.0,2603.0,3014.0,2,-274.0,-5.0,5,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+COALINDIA,2026-01-20,2026-01-21,2026-01-29,LONG,414.95,456.45,394.2,456.45,18,747.0,10.0,6,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+ONGC,2026-01-23,2026-01-27,2026-01-29,LONG,246.6,271.26,234.27,271.26,30,739.8,10.0,3,Medium,5,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+INDUSINDBK,2026-01-27,2026-01-28,2026-02-10,LONG,898.75,927.6,853.81,988.63,8,230.8,3.21,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+TATACONSUM,2026-01-27,2026-01-28,2026-01-28,LONG,1190.0,1130.5,1130.5,1309.0,6,-357.0,-5.0,1,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+SBILIFE,2026-01-28,2026-01-29,2026-01-30,LONG,2057.4,1954.53,1954.53,2263.14,3,-308.61,-5.0,2,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+BPCL,2026-01-29,2026-01-30,2026-02-12,LONG,366.7,377.7,348.36,403.38,20,220.0,3.0,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+TATACONSUM,2026-01-29,2026-01-30,2026-02-12,LONG,1106.5,1149.3,1051.17,1217.16,6,256.8,3.87,10,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+HCLTECH,2026-01-30,2026-02-02,2026-02-04,LONG,1670.0,1586.5,1586.5,1837.0,4,-334.0,-5.0,3,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+HINDALCO,2026-01-30,2026-02-02,2026-02-13,LONG,905.7,909.0,860.41,996.28,8,26.4,0.36,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+ICICIBANK,2026-02-04,2026-02-05,2026-02-18,LONG,1414.0,1408.2,1343.3,1555.4,5,-29.0,-0.41,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+INDUSINDBK,2026-02-11,2026-02-12,2026-02-25,LONG,928.7,937.35,882.26,1021.58,8,69.2,0.93,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+AXISBANK,2026-02-12,2026-02-13,2026-02-26,LONG,1341.3,1395.5,1274.23,1475.44,5,271.0,4.04,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+BPCL,2026-02-13,2026-02-16,2026-02-27,LONG,372.65,385.4,354.02,409.91,20,255.0,3.42,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+DRREDDY,2026-02-13,2026-02-16,2026-02-27,LONG,1257.1,1286.3,1194.24,1382.82,5,146.0,2.32,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+ONGC,2026-02-18,2026-02-19,2026-03-05,LONG,270.3,276.35,256.79,297.32,27,163.35,2.24,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+NESTLEIND,2026-02-26,2026-02-27,2026-03-04,LONG,1311.1,1245.54,1245.54,1442.22,5,-327.8,-5.0,3,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+POWERGRID,2026-02-27,2026-03-02,2026-03-16,LONG,290.0,297.75,275.5,319.0,25,193.75,2.67,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+SUNPHARMA,2026-02-27,2026-03-02,2026-03-16,LONG,1712.0,1783.2,1626.4,1883.2,4,284.8,4.16,10,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+AXISBANK,2026-02-27,2026-03-02,2026-03-09,LONG,1369.1,1300.64,1300.64,1506.02,5,-342.3,-5.0,5,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+ADANIPORTS,2026-03-04,2026-03-05,2026-03-13,LONG,1447.2,1374.84,1374.84,1591.92,5,-361.8,-5.0,7,Medium,5,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+HINDALCO,2026-03-05,2026-03-06,2026-03-13,LONG,955.0,907.25,907.25,1050.5,7,-334.25,-5.0,6,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+INDUSINDBK,2026-03-10,2026-03-11,2026-03-12,LONG,897.2,852.34,852.34,986.92,8,-358.88,-5.0,2,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+BEL,2026-03-12,2026-03-13,2026-03-16,LONG,451.9,429.3,429.3,497.1,16,-361.6,-5.0,2,Medium,5,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+HINDALCO,2026-03-16,2026-03-17,2026-03-20,LONG,928.9,882.45,882.45,1021.8,8,-371.6,-5.0,4,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+SHRIRAMFIN,2026-03-16,2026-03-17,2026-03-19,LONG,999.9,949.9,949.9,1099.9,7,-350.0,-5.0,3,Medium,5,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+APOLLOHOSP,2026-03-16,2026-03-17,2026-03-23,LONG,7490.0,7115.5,7115.5,8239.0,1,-374.5,-5.0,5,Medium,4,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+JSWSTEEL,2026-03-16,2026-03-17,2026-04-01,LONG,1147.0,1140.4,1089.65,1261.7,6,-39.6,-0.58,10,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+TATASTEEL,2026-03-16,2026-03-17,2026-04-01,LONG,187.8,194.6,178.41,206.58,39,265.2,3.62,10,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+COALINDIA,2026-03-19,2026-03-20,2026-04-07,LONG,456.7,463.0,433.86,502.38,16,100.8,1.38,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+SHRIRAMFIN,2026-03-20,2026-03-23,2026-03-23,LONG,930.0,883.5,883.5,1023.0,8,-372.0,-5.0,1,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+APOLLOHOSP,2026-03-24,2026-03-25,2026-04-10,LONG,7461.0,7511.5,7087.95,8207.1,1,50.5,0.68,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+ONGC,2026-03-25,2026-03-27,2026-04-13,LONG,270.5,287.55,256.97,297.56,27,460.35,6.3,10,Medium,5,Up,Weak,Low,No MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+TATASTEEL,2026-04-02,2026-04-06,2026-04-16,LONG,193.02,212.32,183.37,212.32,38,733.4,10.0,8,Medium,5,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 5/7
+DRREDDY,2026-04-02,2026-04-06,2026-04-20,LONG,1220.1,1232.6,1159.09,1342.12,6,75.0,1.02,10,Medium,4,Up,Weak,Good,No MACD cross,Away from 20 EMA,RSI cooling,No reversal,Signal score 4/7
+COALINDIA,2026-04-08,2026-04-09,2026-04-23,LONG,449.25,450.65,426.79,494.17,16,22.4,0.31,10,Medium,5,Up,Weak,Good,No MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+TITAN,2026-04-10,2026-04-13,2026-04-27,LONG,4391.1,4441.8,4171.55,4830.2,1,50.7,1.15,10,Medium,4,Up,Weak,Good,MACD cross,Away from 20 EMA,RSI not in zone,Bullish reversal,Signal score 4/7
+BEL,2026-04-13,2026-04-15,2026-04-28,LONG,447.5,435.75,425.12,492.26,16,-188.0,-2.63,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+ONGC,2026-04-16,2026-04-17,2026-04-30,LONG,283.4,299.55,269.23,311.74,26,419.9,5.7,10,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+LT,2026-04-22,2026-04-23,2026-05-06,LONG,4009.9,4008.5,3809.4,4410.9,1,-1.4,-0.03,9,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+COALINDIA,2026-04-24,2026-04-27,2026-05-06,LONG,458.5,470.2,435.57,504.36,16,187.2,2.55,7,Medium,5,Up,Weak,Good,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 5/7
+AXISBANK,2026-04-27,2026-04-28,2026-05-06,LONG,1312.0,1294.2,1246.4,1443.2,5,-89.0,-1.36,6,High,7,Up,Good,Good,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7
+ASIANPAINT,2026-04-28,2026-04-29,2026-05-06,LONG,2469.9,2519.0,2346.41,2716.88,3,147.3,1.99,5,Medium,4,Up,Weak,Low,MACD cross,Pullback to 20 EMA,RSI cooling,No reversal,Signal score 4/7
+GRASIM,2026-04-30,2026-05-04,2026-05-06,LONG,2805.0,2914.8,2664.75,3085.5,2,219.6,3.91,3,High,7,Up,Good,Good,MACD cross,Pullback to 20 EMA,RSI cooling,Bullish reversal,Signal score 7/7

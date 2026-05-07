@@ -1,0 +1,8 @@
+symbol,signal_date,entry_date,exit_date,side,entry_price,exit_price,stop_loss,target_price,quantity,pnl,pnl_pct,holding_days,confidence,score,market_trend,entry_point,avg_volume,macd_crossover,ema_crossover,price_position,bullish_reversal,comments
+APOLLOHOSP,2026-02-20,2026-02-27,2026-03-20,LONG,7680.0,7296.0,7296.0,8448.0,1,-384.0,-5.0,4,Medium,5,Up,Weak,Low,Neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
+HINDALCO,2026-03-06,2026-03-13,2026-03-20,LONG,940.0,893.0,893.0,1034.0,10,-470.0,-5.0,2,Medium,5,Up,Weak,Good,No neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
+TATASTEEL,2026-03-20,2026-03-27,2026-05-08,LONG,193.0,215.47,183.35,212.3,51,1145.97,11.64,7,Medium,5,Up,Weak,Good,No neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
+EICHERMOT,2026-04-10,2026-04-17,2026-05-08,LONG,7150.0,7310.5,6792.5,7865.0,1,160.5,2.24,4,Medium,5,Up,Weak,Good,No neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
+JSWSTEEL,2026-04-10,2026-04-17,2026-05-08,LONG,1199.1,1273.3,1139.14,1319.02,8,593.6,6.19,4,Medium,5,Up,Weak,Good,No neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
+NTPC,2026-04-10,2026-04-17,2026-05-08,LONG,374.35,394.85,355.63,411.79,26,533.0,5.48,4,Medium,5,Up,Weak,Good,No neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
+DRREDDY,2026-04-24,2026-05-01,2026-05-08,LONG,1320.4,1311.0,1254.38,1452.44,7,-65.8,-0.71,2,Medium,5,Up,Weak,Good,No neg-zone cross,Above 12W & 26W EMA,At 50W/200W MA,Strong pattern,Signal score 5/7
